@@ -1,0 +1,97 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Student {
+public:
+    int rollNo;
+    string name;
+
+    Student(int rollNo, string name) {
+        this->rollNo = rollNo;
+        this->name = name;
+    }
+};
+
+class StudentManagementSystem {
+private:
+    vector<Student> students;
+
+public:
+    void addStudent(int rollNo, string name) {
+        Student student(rollNo, name);
+        students.push_back(student);
+        cout << "Student added successfully." << endl;
+    }
+
+    void removeStudent(int rollNo) {
+        for (size_t i = 0; i < students.size(); i++) {
+            if (students[i].rollNo == rollNo) {
+                students.erase(students.begin() + i);
+                cout << "Student with Roll No " << rollNo << " removed." << endl;
+                return;
+            }
+        }
+        cout << "Student with Roll No " << rollNo << " not found." << endl;
+    }
+
+    void displayStudents() {
+        if (students.empty()) {
+            cout << "No students in the system." << endl;
+        } else {
+            cout << "Student List:" << endl;
+            for (const Student& student : students) {
+                cout << "Roll No: " << student.rollNo << ", Name: " << student.name << endl;
+            }
+        }
+    }
+};
+
+int main() {
+    StudentManagementSystem sms;
+
+    while (true) {
+        cout << "\nStudent Management System Menu:" << endl;
+        cout << "1. Add Student" << endl;
+        cout << "2. Remove Student" << endl;
+        cout << "3. Display Students" << endl;
+        cout << "4. Exit" << endl;
+        cout << "Enter your choice: ";
+
+        int choice;
+        cin >> choice;
+
+        switch (choice) {
+            case 1: {
+                int rollNo;
+                string name;
+                cout << "Enter Roll No: ";
+                cin >> rollNo;
+                cin.ignore(); // Clear newline character from the input buffer
+                cout << "Enter Name: ";
+                getline(cin, name);
+                sms.addStudent(rollNo, name);
+                break;
+            }
+            case 2: {
+                int rollNo;
+                cout << "Enter Roll No of student to remove: ";
+                cin >> rollNo;
+                sms.removeStudent(rollNo);
+                break;
+            }
+            case 3:
+                sms.displayStudents();
+                break;
+            case 4:
+                cout << "Exiting Student Management System." << endl;
+                return 0;
+            default:
+                cout << "Invalid choice. Please enter a valid option." << endl;
+        }
+    }
+
+    return 0;
+}
